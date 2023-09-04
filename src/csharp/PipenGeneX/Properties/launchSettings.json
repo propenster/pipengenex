@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PipenGeneX": {
+      "commandName": "Project",
+      "commandLineArgs": "-f \"C:\\Temp\\workflow1.json\""
+    }
+  }
+}
