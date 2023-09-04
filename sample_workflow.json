@@ -1,0 +1,58 @@
+{
+    "name": "My First RNASeq Workflow",
+    "description": "This is my first RnaSeqworkflow in my custom pipeline generator...",
+    "working_directory": "~/home/bio/pipeline_2",
+    "variables": [
+        {
+            "key": "samtools_d",
+            "value": "~/usr/local/bin/samtools_d"
+        },
+        {
+            "key": "thread_1",
+            "value": "50"
+        },
+        {
+            "key": "input_sampleID",
+            "value": "human_te_genome.fasta.gz"
+        },
+        {
+            "key": "output_name_key",
+            "value": "human_te_genome_rna_seq_out"
+        }
+    ],
+    "tasks": [
+        {
+            "id": "1",
+            "command": "${samtools_d}samtools view -F 14 -b -@ $thread_1 $list_tmp1[0] >${input_sampleID}_m_ERV.bam",
+            "description": "Align Reads"
+        },
+        {
+            "id": "2",
+            "command": "fastqc ",
+            "description": "Align Reads"
+        },
+        {
+            "id": "3",
+            "command": "${samtools_d}samtools merge -f ${input_sampleID}_m2.bam ${input_sampleID}_m_ERV.bam ${input_sampleID}_m1_ERV.bam",
+            "description": "Merge BAMs"
+        },
+        {
+            "id": "4",
+            "command": "python3 ./Scripts/run_python_analysis_script.py ./outputs/${input_sampleID}.bam ./outputs/${output_name_key}.csv",
+            "description": "Analyse RnaSeq Outputs"
+        },
+        {
+            "id": "5",
+            "command": "climailer pipelineresults@website.org ./outputs/${output_name_key}.csv",
+            "description": "Send Output via Email"
+        },
+        {
+            "id": "6",
+            "command": "echo 'Welcome to Jumanji'",
+            "description": "Sleep 10 seconds"
+        }
+    ],
+    "run_sequence": [
+        "1", "2", "3", "4", "5,6"
+    ]
+}
