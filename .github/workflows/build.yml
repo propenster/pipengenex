@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore -p src/csharp/PipenGeneX/PipenGeneX.csproj
     - name: Build
       run: dotnet build --no-restore src/csharp/PipenGeneX/PipenGeneX.csproj
     - name: Test
