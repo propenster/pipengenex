@@ -958,19 +958,6 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
-      },
-      "SystemInfoLibrary/1.4.3": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/SystemInfoLibrary.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/SystemInfoLibrary.dll": {
-            "related": ".xml"
-          }
-        }
       }
     }
   },
@@ -3772,21 +3759,6 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
-    },
-    "SystemInfoLibrary/1.4.3": {
-      "sha512": "9gdoO4PRr96Xb5iqdBF6TIdxDBP//4ozVL4Qjd6JAI+HFVvqmg41NR5giW/KO44UFoF4qdqM/t4YlDpXeUgnQQ==",
-      "type": "package",
-      "path": "systeminfolibrary/1.4.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net45/SystemInfoLibrary.dll",
-        "lib/net45/SystemInfoLibrary.xml",
-        "lib/netstandard2.0/SystemInfoLibrary.dll",
-        "lib/netstandard2.0/SystemInfoLibrary.xml",
-        "systeminfolibrary.1.4.3.nupkg.sha512",
-        "systeminfolibrary.nuspec"
-      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -3794,8 +3766,7 @@
       "CliWrap >= 3.6.4",
       "CommandLineParser >= 2.9.1",
       "Newtonsoft.Json >= 13.0.3",
-      "Orc.SystemInfo >= 4.3.1",
-      "SystemInfoLibrary >= 1.4.3"
+      "Orc.SystemInfo >= 4.3.1"
     ]
   },
   "packageFolders": {
@@ -3852,10 +3823,6 @@
           "Orc.SystemInfo": {
             "target": "Package",
             "version": "[4.3.1, )"
-          },
-          "SystemInfoLibrary": {
-            "target": "Package",
-            "version": "[1.4.3, )"
           }
         },
         "imports": [

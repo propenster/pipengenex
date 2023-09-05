@@ -55,10 +55,6 @@
             "Orc.SystemInfo": {
               "target": "Package",
               "version": "[4.3.1, )"
-            },
-            "SystemInfoLibrary": {
-              "target": "Package",
-              "version": "[1.4.3, )"
             }
           },
           "imports": [

@@ -11,8 +11,7 @@
           "CliWrap": "3.6.4",
           "CommandLineParser": "2.9.1",
           "Newtonsoft.Json": "13.0.3",
-          "Orc.SystemInfo": "4.3.1",
-          "SystemInfoLibrary": "1.4.3"
+          "Orc.SystemInfo": "4.3.1"
         },
         "runtime": {
           "PipenGeneX.dll": {}
@@ -556,14 +555,6 @@
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XmlDocument": "4.3.0"
         }
-      },
-      "SystemInfoLibrary/1.4.3": {
-        "runtime": {
-          "lib/netstandard2.0/SystemInfoLibrary.dll": {
-            "assemblyVersion": "1.4.3.0",
-            "fileVersion": "1.4.3.0"
-          }
-        }
       }
     }
   },
@@ -950,13 +941,6 @@
       "sha512": "sha512-MYoTCP7EZ98RrANESW05J5ZwskKDoN0AuZ06ZflnowE50LTpbR5yRg3tHckTVm5j/m47stuGgCrCHWePyHS70Q==",
       "path": "system.xml.xmlserializer/4.3.0",
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
-    },
-    "SystemInfoLibrary/1.4.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-9gdoO4PRr96Xb5iqdBF6TIdxDBP//4ozVL4Qjd6JAI+HFVvqmg41NR5giW/KO44UFoF4qdqM/t4YlDpXeUgnQQ==",
-      "path": "systeminfolibrary/1.4.3",
-      "hashPath": "systeminfolibrary.1.4.3.nupkg.sha512"
     }
   }
 }

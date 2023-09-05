@@ -45,7 +45,6 @@ C:\lib\pipegenex\src\csharp\PipenGeneX\bin\Debug\net6.0\System.Drawing.Common.dl
 C:\lib\pipegenex\src\csharp\PipenGeneX\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\lib\pipegenex\src\csharp\PipenGeneX\bin\Debug\net6.0\System.Security.Permissions.dll
 C:\lib\pipegenex\src\csharp\PipenGeneX\bin\Debug\net6.0\System.Windows.Extensions.dll
-C:\lib\pipegenex\src\csharp\PipenGeneX\bin\Debug\net6.0\SystemInfoLibrary.dll
 C:\lib\pipegenex\src\csharp\PipenGeneX\bin\Debug\net6.0\de\Orc.SystemInfo.resources.dll
 C:\lib\pipegenex\src\csharp\PipenGeneX\bin\Debug\net6.0\es\Orc.SystemInfo.resources.dll
 C:\lib\pipegenex\src\csharp\PipenGeneX\bin\Debug\net6.0\fr\Orc.SystemInfo.resources.dll

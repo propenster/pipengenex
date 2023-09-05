@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CA+mmYT9CsHoQBAXA+11N29HzhFvPTMh8jVkk/7LRS+bTpYsElib4SezsKeGzyHRMuYJOAIUJUxix8q6bOtfGw==",
+  "dgSpecHash": "0DXel6lhyg8kSur+PPMNt1jcsGtANucTKKjYMdribdeXoHADwSjzof8bAGnlVWskudKwt9lsD1X7oi+y4S9Gug==",
   "success": true,
   "projectFilePath": "C:\\lib\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj",
   "expectedPackageFiles": [
@@ -58,7 +58,6 @@
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\faith.olusegun\\.nuget\\packages\\systeminfolibrary\\1.4.3\\systeminfolibrary.1.4.3.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.16\\microsoft.windowsdesktop.app.ref.6.0.16.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.16\\microsoft.netcore.app.ref.6.0.16.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.16\\microsoft.aspnetcore.app.ref.6.0.16.nupkg.sha512",
