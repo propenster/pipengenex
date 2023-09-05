@@ -24,9 +24,6 @@ jobs:
       working-directory: src/csharp
       run: |
         ls -la
-    - name: Set working directory
-      run: cd src/csharp
-      working-directory: src/csharp
     - name: Restore dependencies
       run: dotnet restore -s src/csharp/PipenGeneX.sln
     - name: Build
