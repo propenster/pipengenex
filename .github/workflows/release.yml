@@ -1,4 +1,4 @@
-name: Publish
+name: Publish2
 
 on:
   release:
@@ -7,7 +7,7 @@ env:
   DOTNET_VERSION: '6.0.x'
 jobs:
   release:
-    name: Release
+    name: Release PipenGeneX
     strategy:
       matrix:
         kind: ['linux', 'windows']
