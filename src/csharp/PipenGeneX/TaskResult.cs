@@ -8,9 +8,10 @@ namespace PipenGeneX
 {
     public class TaskResult
     {
-        public string TaskId { get; set; }
-        public string Command { get; set; }
+        public string TaskId { get; set; } = string.Empty;
+        public string Command { get; set; } = string.Empty;
+        public string StdOut { get; set; } = string.Empty;
         public ICollection<string> Errors { get; set; } = new List<string>();
-        public bool Success => Errors.Any();
+        public bool Success => !Errors.Any();
     }
 }

@@ -8,7 +8,7 @@ namespace PipenGeneX
 {
     public class Runner
     {
-        public Workflow Workflow { get; set; }
-        public List<TaskResult> Results { get; set; }
+        public Workflow Workflow { get; set; } = new Workflow();
+        public List<TaskResult> Results { get; set; } = new List<TaskResult>();
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\faith.olusegun\\Pictures\\Sholly\\Faith_PhD\\Genomic_Computational_Biology\\Project1_Viral_Genomic_Exploration_And_Bioinformatics_Analysis\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj": {}
+    "C:\\lib\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj": {}
   },
   "projects": {
-    "C:\\Users\\faith.olusegun\\Pictures\\Sholly\\Faith_PhD\\Genomic_Computational_Biology\\Project1_Viral_Genomic_Exploration_And_Bioinformatics_Analysis\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj": {
+    "C:\\lib\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\faith.olusegun\\Pictures\\Sholly\\Faith_PhD\\Genomic_Computational_Biology\\Project1_Viral_Genomic_Exploration_And_Bioinformatics_Analysis\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj",
+        "projectUniqueName": "C:\\lib\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj",
         "projectName": "PipenGeneX",
-        "projectPath": "C:\\Users\\faith.olusegun\\Pictures\\Sholly\\Faith_PhD\\Genomic_Computational_Biology\\Project1_Viral_Genomic_Exploration_And_Bioinformatics_Analysis\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj",
+        "projectPath": "C:\\lib\\pipegenex\\src\\csharp\\PipenGeneX\\PipenGeneX.csproj",
         "packagesPath": "C:\\Users\\faith.olusegun\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\faith.olusegun\\Pictures\\Sholly\\Faith_PhD\\Genomic_Computational_Biology\\Project1_Viral_Genomic_Exploration_And_Bioinformatics_Analysis\\pipegenex\\src\\csharp\\PipenGeneX\\obj\\",
+        "outputPath": "C:\\lib\\pipegenex\\src\\csharp\\PipenGeneX\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\faith.olusegun\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -51,6 +51,14 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "Orc.SystemInfo": {
+              "target": "Package",
+              "version": "[4.3.1, )"
+            },
+            "SystemInfoLibrary": {
+              "target": "Package",
+              "version": "[1.4.3, )"
             }
           },
           "imports": [

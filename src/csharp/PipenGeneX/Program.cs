@@ -1,23 +1,61 @@
-﻿using CliWrap;
+﻿using Catel.IoC;
+using CliWrap;
 using CliWrap.Buffered;
 using CommandLine;
 using Newtonsoft.Json;
+using Orc.SystemInfo;
 using PipenGeneX;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 internal class Program
 {
-
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        Parser.Default.ParseArguments<Options>(args)
-        .WithParsed(Run)
-        .WithNotParsed(HandleErrors);
-    }
+        Console.WriteLine("Working... -->");
+        //await Parser.Default
+        //    .ParseArguments<Options>(args)
+        //    .MapResult(async (opts) => await Run(opts),
+        //        errs => HandleErrors(errs));
 
+        var result = Parser.Default.ParseArguments<RunOptions, Options>(args);
+
+        await result.MapResult(
+            async (RunOptions opts) =>
+            {
+                await Run(new Options { FILE = opts.FilePath, Threads = opts.Threads });
+            },
+            errors => HandleErrors(errors));
+        //{
+        //    // Handle parsing errors here
+        //    Console.WriteLine("Parsing errors occurred.");
+        //    return Task.CompletedTask;
+        //});
+
+
+        Console.WriteLine();
+
+        //Console.WriteLine("Return code= {0}", result);
+    }
+    static Task HandleErrors(IEnumerable<Error> errors)
+    {
+        foreach (var error in errors)
+        {
+            switch (error.Tag)
+            {
+                case ErrorType.HelpVerbRequestedError:
+                case ErrorType.HelpRequestedError:
+                case ErrorType.VersionRequestedError:
+
+                    continue;
+                default:
+                    Console.WriteLine($"Error: {error}");
+                    break;
+
+            }
+        }
+        return Task.CompletedTask;
+    }
     private static string[] GetCommands(string input)
     {
         if (string.IsNullOrWhiteSpace(input)) return new string[] { };
@@ -26,24 +64,17 @@ internal class Program
         var restAsOneItem = string.Empty;
         if (firstSpaceIndex != -1)
         {
-            // Split the input into two parts
             firstItem = input.Substring(0, firstSpaceIndex);
             restAsOneItem = input.Substring(firstSpaceIndex + 1);
-
-            Console.WriteLine("First Item: " + firstItem);
-            Console.WriteLine("Rest as One Item: " + restAsOneItem);
         }
         return new string[] { firstItem, restAsOneItem };
     }
 
-    static void Run(Options options)
+    static async Task Run(Options options)
     {
-        Console.WriteLine("Workflow Definition File Path >>> {0}!", options.FILE);
+        //Console.WriteLine("Workflow Definition File Path >>> {0}!", options.FILE);
         var runner = new Runner();
 
-        //RunWorkFlow(options.FILE);
-
-        //throw new CommandLine.Error(ErrorType.HelpRequestedError, options.FILE);
         var fileText = string.Empty;
         try
         {
@@ -75,6 +106,7 @@ internal class Program
         }
         workflow.Variables = workflow.VariableList.ToDictionary(x => x.Key, x => x.Value); //convert it now to dictionary...
         runner.Workflow = workflow;
+        workflow.WorkingDirectory = !Directory.Exists(workflow?.WorkingDirectory) ? Directory.GetCurrentDirectory() : workflow.WorkingDirectory;
 
         if (!(workflow.Sequence.Any() && workflow.Tasks.Any()))
         {
@@ -82,6 +114,20 @@ internal class Program
             return;
         }
 
+        await RunWorkflow(runner, workflow);
+
+        //compile Report...
+        Console.WriteLine("Tasks Run Completed...\\/\\/");
+        Console.WriteLine("Compiling Report ...");
+
+        var systemInfoService = ServiceLocator.Default.ResolveType<ISystemInfoService>();
+        var sysInfo = systemInfoService.GetSystemInfo().Where(x => !string.IsNullOrWhiteSpace(x.Name) && !string.IsNullOrWhiteSpace(x.Value)).ToDictionary(x => x.Name, x => x.Value);
+        GenerateReport(runner, workflow, sysInfo);
+        return;
+    }
+
+    private static async Task RunWorkflow(Runner runner, Workflow? workflow)
+    {
         foreach (var item in workflow?.Sequence)
         {
             if (!item.Trim().Contains(','))
@@ -91,7 +137,7 @@ internal class Program
                 {
                     PrintError(OptionsError.InvalidTaskId, item.Trim());
                 }
-                var taskResults = Task.Run(async () => await RunTaskCommand(task?.Id, task?.Command,workflow?.WorkingDirectory, workflow?.Variables)).Result;
+                var taskResults = await RunTaskCommand(task?.Id, task?.Command, workflow?.WorkingDirectory, workflow?.Variables);
                 runner.Results.Add(taskResults);
             }
             else
@@ -100,14 +146,48 @@ internal class Program
                 ParallelLoopResult res = Parallel.ForEach(tasks, async item => runner.Results.Add(await RunTaskCommand(item?.Id, item?.Command, workflow?.WorkingDirectory, workflow?.Variables)));
             }
         }
-
-        //compile Report...
-
-        return;
     }
 
-    private static async Task<TaskResult> RunTaskCommand(string? id, string? commandToRun, string working_directory, Dictionary<string, string>? variables)
+    private static void GenerateReport(Runner runner, Workflow? workflow, Dictionary<string, string> sysInfo)
     {
+        var outputReportPath = Path.Combine(workflow?.WorkingDirectory, "report.csv");
+
+        try
+        {
+            File.Create(outputReportPath).Close();
+            File.AppendAllText(outputReportPath, string.Format("System Information:{0}{1}{2}{3}{4}{5}{6}", Environment.NewLine, "==============================", Environment.NewLine, string.Join(",", sysInfo.Keys.ToArray()), Environment.NewLine, string.Join(",", sysInfo.Values.ToArray()), Environment.NewLine));
+
+
+            //write csv of taskResults...
+            File.AppendAllText(outputReportPath, string.Format("TASK_ID,COMMAND,OUTPUT,ERROR,SUCCESSFUL{0}", Environment.NewLine));
+            if (runner.Results != null && runner.Results.Any())
+            {
+                var sb = new StringBuilder();
+                foreach (var item in runner?.Results)
+                {
+                    //sb.AppendLine(string.Format("{0},{1},{2},{3},{4}", item?.TaskId, item?.Command, item?.StdOut, string.Join(";", item?.Errors) ?? string.Empty, item.Success ? 1 : 0));
+                    sb.AppendLine(string.Format("{0},{1},{2},{3},{4}", item?.TaskId, item?.Command, string.Empty, string.Join(";", item?.Errors) ?? string.Empty, item.Success == true ? 1 : 0));
+                }
+
+                File.AppendAllText(outputReportPath, sb.ToString());
+            }
+            //var errors = runner.Results.Where(x => x.Errors.Any()).ToList();
+            //if (errors.Any())
+            //{
+            //    var errorPath = Path.Combine(workflow?.WorkingDirectory, "errors.txt");
+
+            //}
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: {0}", ex.Message);
+        }
+    }
+
+    private static async Task<TaskResult> RunTaskCommand(string? id, string? commandToRun, string workingDirectory, Dictionary<string, string>? variables)
+    {
+        Console.WriteLine("Runing... \\/\\/");
+        Console.WriteLine();
         var taskResult = new TaskResult { Command = commandToRun, TaskId = id, };
 
         var globErrors = new List<string>();
@@ -117,27 +197,22 @@ internal class Program
             string pattern = @"\{\{([^}]+)\}\}";
 
             // Use Regex.Matches to find all matches in the input string
-            if (variables.Any())
+            if (variables != null && variables.Any())
             {
                 foreach (var item in variables)
                 {
                     var match = Regex.Match(item.Value, pattern);
                     if (match.Success)
                     {
-                        Console.WriteLine("Match: " + match.Groups[1].Value);
                         var envVariable = Environment.GetEnvironmentVariable(match.Groups[1].Value);
                         if (string.IsNullOrWhiteSpace(envVariable))
                         {
                             globErrors.Add(string.Format("Error. Could not retrieve Environment Variable configured in workflow definition {0}", match.Groups[0].Value));
-                            //return new TaskResult
-                            //{
-                            //    Errors = new string[] {  }
-                            //};
                             continue;
                         }
-                        variables[item.Key] = envVariable;//  (match.Groups[0].Value, envVariable);
+                        variables[item.Key] = envVariable;
                     }
-                    
+
                 }
             }
 
@@ -157,12 +232,12 @@ internal class Program
                 foreach (Match match in matches)
                 {
                     string variableName = match.Groups[1].Value;
-                    if(!variables.TryGetValue(variableName, out var variableValue))
+                    if (!variables.TryGetValue(variableName, out var variableValue))
                     {
                         //better way... Add to errors? and then return before you run command...
                         globErrors.Add(string.Format("Error. Could not retrieve Environment Variable configured in command text {0}", match.Groups[0].Value));
                     }
-                    Console.WriteLine("Match: " + variableName);
+                    //Console.WriteLine("Match: " + variableName);
                     commandToRun = commandToRun.Replace(match.Value, variableValue);
 
                 }
@@ -183,10 +258,12 @@ internal class Program
                 return taskResult;
             }
 
+            //if (!Directory.Exists(working_directory)) working_directory = Directory.GetCurrentDirectory();
+
             var cmd = Cli.Wrap(commandSplit.FirstOrDefault())
                .WithArguments(commandSplit.LastOrDefault())
-               .WithWorkingDirectory(working_directory ?? Directory.GetCurrentDirectory());
-            Console.WriteLine("Running command...");
+               .WithWorkingDirectory(workingDirectory);
+            Console.WriteLine("Running Task command... {0}", commandToRun);
 
             // Execute the command and capture the output
             var result = await cmd.ExecuteBufferedAsync();
@@ -196,6 +273,7 @@ internal class Program
             {
                 Console.WriteLine("command {0} executed successfully.", commandToRun);
                 Console.WriteLine(result.StandardOutput);
+                taskResult.StdOut = result.StandardOutput;
             }
             else
             {
@@ -203,7 +281,7 @@ internal class Program
                 Console.WriteLine(result.StandardError);
                 taskResult.Errors.Add(result.StandardError);
             }
-            
+
             return taskResult;
         }
         catch (Exception ex)
@@ -212,13 +290,6 @@ internal class Program
             return taskResult;
         }
     }
-
-    static string UnescapeBraces(string input)
-    {
-        // Replace escaped braces with their original form
-        return input.Replace("\\{", "{").Replace("\\}", "}");
-    }
-
     public static void PrintError(OptionsError error, string? message)
     {
         Console.ForegroundColor = ConsoleColor.Red;
@@ -261,17 +332,6 @@ internal class Program
         }
         Console.ResetColor();
     }
-    static void HandleErrors(IEnumerable<Error> errors)
-    {
-        foreach (var error in errors)
-        {
-            Console.WriteLine($"Error: {error}");
-        }
-    }
+
 }
 
-public class Options
-{
-    [Option('f', "FILE", Required = true, HelpText = "PipegeneX Workflow definition JSON file")]
-    public string FILE { get; set; }
-}
