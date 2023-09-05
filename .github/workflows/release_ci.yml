@@ -3,6 +3,7 @@ name: Publish
 on:
   release:
     types: [published]
+permissions: write-all
 
 jobs:
   release:
@@ -53,6 +54,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "${release_name}*"
+          files: "App*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
