@@ -54,6 +54,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "csharp*"
+          files: "src/csharp/PipenGeneX/${release_name}*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
