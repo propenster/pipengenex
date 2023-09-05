@@ -3,7 +3,11 @@ name: Publish
 on:
   release:
     types: [published]
-permissions: write-all
+
+permissions:
+  contents: write
+  packages: write
+  deployments: write
 
 jobs:
   release:
@@ -24,15 +28,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
-      - name: Setup dotnet
+      - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
 
-      - name: Build
-        shell: bash
+      - name: Build and Package
         run: |
           tag=$(git describe --tags --abbrev=0)
           release_name="App-$tag-${{ matrix.target }}"
@@ -45,15 +48,18 @@ jobs:
             # Pack to zip for Windows
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
           else
-          tar czvf "${release_name}.tar.gz" "$release_name"
+            tar czvf "${release_name}.tar.gz" "$release_name"
           fi
 
           # Delete output directory
           rm -r "$release_name"
 
-      - name: Publish
+          echo "release_name=$release_name" >> $GITHUB_ENV
+
+      - name: Publish Release
+        id: publish-release
         uses: softprops/action-gh-release@v1
         with:
-          files: "${release_name}*"
+          files: ${{ env.release_name }}/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
