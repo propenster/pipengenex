@@ -13,11 +13,6 @@ internal class Program
     public static async Task Main(string[] args)
     {
         Console.WriteLine("Working... -->");
-        //await Parser.Default
-        //    .ParseArguments<Options>(args)
-        //    .MapResult(async (opts) => await Run(opts),
-        //        errs => HandleErrors(errs));
-
         var result = Parser.Default.ParseArguments<RunOptions, Options>(args);
 
         await result.MapResult(
@@ -26,16 +21,7 @@ internal class Program
                 await Run(new Options { FILE = opts.FilePath, Threads = opts.Threads });
             },
             errors => HandleErrors(errors));
-        //{
-        //    // Handle parsing errors here
-        //    Console.WriteLine("Parsing errors occurred.");
-        //    return Task.CompletedTask;
-        //});
-
-
         Console.WriteLine();
-
-        //Console.WriteLine("Return code= {0}", result);
     }
     static Task HandleErrors(IEnumerable<Error> errors)
     {
@@ -72,7 +58,6 @@ internal class Program
 
     static async Task Run(Options options)
     {
-        //Console.WriteLine("Workflow Definition File Path >>> {0}!", options.FILE);
         var runner = new Runner();
 
         var fileText = string.Empty;
@@ -94,7 +79,7 @@ internal class Program
         }
         if (Path.GetExtension(options?.FILE).ToLowerInvariant() != ".json")
         {
-            PrintError(OptionsError.InvalidFile, "json");
+            PrintError(OptionsError.InvalidFile, ".json");
             return;
         }
 
@@ -157,7 +142,6 @@ internal class Program
             File.Create(outputReportPath).Close();
             File.AppendAllText(outputReportPath, string.Format("System Information:{0}{1}{2}{3}{4}{5}{6}", Environment.NewLine, "==============================", Environment.NewLine, string.Join(",", sysInfo.Keys.ToArray()), Environment.NewLine, string.Join(",", sysInfo.Values.ToArray()), Environment.NewLine));
 
-
             //write csv of taskResults...
             File.AppendAllText(outputReportPath, string.Format("TASK_ID,COMMAND,OUTPUT,ERROR,SUCCESSFUL{0}", Environment.NewLine));
             if (runner.Results != null && runner.Results.Any())
@@ -165,18 +149,11 @@ internal class Program
                 var sb = new StringBuilder();
                 foreach (var item in runner?.Results)
                 {
-                    //sb.AppendLine(string.Format("{0},{1},{2},{3},{4}", item?.TaskId, item?.Command, item?.StdOut, string.Join(";", item?.Errors) ?? string.Empty, item.Success ? 1 : 0));
                     sb.AppendLine(string.Format("{0},{1},{2},{3},{4}", item?.TaskId, item?.Command, string.Empty, string.Join(";", item?.Errors) ?? string.Empty, item.Success == true ? 1 : 0));
                 }
 
                 File.AppendAllText(outputReportPath, sb.ToString());
             }
-            //var errors = runner.Results.Where(x => x.Errors.Any()).ToList();
-            //if (errors.Any())
-            //{
-            //    var errorPath = Path.Combine(workflow?.WorkingDirectory, "errors.txt");
-
-            //}
         }
         catch (Exception ex)
         {
