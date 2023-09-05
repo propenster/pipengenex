@@ -29,8 +29,8 @@ jobs:
       run: | 
         cd src/csharp
       
-    - name: Restore dependencies
-      run: dotnet restore -p ./PipenGeneX/PipenGeneX.csproj
+    - name: Restore dependencies using wildcard
+      run: dotnet restore $(find . -name '*.csproj')
     - name: Build
       run: dotnet build --no-restore ./PipenGeneX/PipenGeneX.csproj
     - name: Test
