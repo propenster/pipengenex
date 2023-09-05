@@ -103,14 +103,26 @@ A typical Bioinformatic pipeline workflow is defined through a JSON configuratio
         }
     ],
     "run_sequence": [
-        "1", "2", "3", "4", "5", "6"
+        "1", "2", "3", "4", "5,6" 
     ]
 }
 
 
 ```
 
+
 In this JSON configuration, you define your workflow's name, description, working directory, variables, tasks, and run sequence. The command field in each task specifies the command to execute, with variables indicated by ${variable_name} syntax.
+
+### Run Sequence
+Something worthy of note is the fact that you can define run_sequence for all the tasks in your workflow. Not only that, you can also tell the Engine to run some particular tasks in parallel say tasks with ids 2, 3 are independent of each other, then while defining your run sequence, you define your run sequence as follows:
+```json
+"run_sequence": [
+        "1", "2,3", "4", "5", "6" 
+    ]
+```
+
+** This means, start running from task 1, run tasks 2 and 3 in parallel, then run task 4, then task 5, and lastly task 6.**
+
 
 ## Running Workflows
 After defining your workflow, you can run it using the **pipegenex** CLI tool. Simply provide the path to your workflow JSON file as an argument:
