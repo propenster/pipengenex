@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -24,9 +24,14 @@ jobs:
       working-directory: src/csharp
       run: |
         ls -la
+
+    - name: Change working directory
+      run: | 
+        cd src/csharp
+      
     - name: Restore dependencies
-      run: dotnet restore -s src/csharp/PipenGeneX.sln
+      run: dotnet restore -s PipenGeneX.sln
     - name: Build
-      run: dotnet build --no-restore src/csharp/PipenGeneX/PipenGeneX.csproj
+      run: dotnet build --no-restore ./PipenGeneX/PipenGeneX.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal src/csharp/PipenGeneX/PipenGeneX.csproj
+      run: dotnet test --no-build --verbosity normal ./PipenGeneX/PipenGeneX.csproj
