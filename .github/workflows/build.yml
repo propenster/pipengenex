@@ -20,9 +20,12 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+    - name: Set working directory
+      run: cd src/csharp
+      working-directory: src/csharp
     - name: Restore dependencies
-      run: dotnet restore -s ./src/csharp/PipenGeneX.sln
+      run: dotnet restore -s PipenGeneX.sln
     - name: Build
-      run: dotnet build --no-restore ./src/csharp/PipenGeneX/PipenGeneX.csproj
+      run: dotnet build --no-restore PipenGeneX/PipenGeneX.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal ./src/csharp/PipenGeneX/PipenGeneX.csproj
+      run: dotnet test --no-build --verbosity normal PipenGeneX/PipenGeneX.csproj
