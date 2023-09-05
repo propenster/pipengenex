@@ -132,7 +132,7 @@ pipegenex run my_workflow.json
 **pipengenex** will execute the tasks in the specified sequence, utilizing any available specified parallelization instruction set in run_sequence for optimal performance.
 
 ## Report and Error Handling
-Upon completing the workflow, **pipengenex** generates a report (report.txt) if the run was successful. In case of errors during execution, an errors.txt file is generated in the working directory. These reports help you monitor the progress and diagnose issues in your pipeline.
+Upon completing the workflow, **pipengenex** generates a report (report.csv) if the run was successful. In case of errors during execution, an errors.txt file is generated in the working directory. These reports help you monitor the progress and diagnose issues in your pipeline.
 
 ## Examples
 To see more examples and advanced usage of pipengenex, please refer to the [Examples](https://github.com/propenster/pipegenex/examples) directory in the project repository.
