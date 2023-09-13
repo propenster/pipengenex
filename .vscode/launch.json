@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'pipegenex'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=pipegenex",
+                    "--package=pipegenex"
+                ],
+                "filter": {
+                    "name": "pipegenex",
+                    "kind": "bin"
+                }
+            },
+            "args": ["C:\\temp\\workflow2.json"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'pipegenex'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=pipegenex",
+                    "--package=pipegenex"
+                ],
+                "filter": {
+                    "name": "pipegenex",
+                    "kind": "bin"
+                }
+            },
+            "args": ["C:\\temp\\workflow2.json"],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
