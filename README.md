@@ -142,3 +142,6 @@ Contributions to pipengenex are welcome! If you'd like to contribute, please che
 
 ## License
 pipengenex is open-source and available under the [MIT License](https://github.com/propenster/pipengenex/license.md). Feel free to use, modify, and distribute it according to the terms of the license.
+
+## Citing
+Olusegun F.E. PipenGeneX -A Multipurpose, Multiplatform Bioinformatics Workflow Design and Execution Framework. Preprint. http://dx.doi.org/10.13140/RG.2.2.16151.96160 
