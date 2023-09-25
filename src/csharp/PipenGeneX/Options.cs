@@ -23,12 +23,14 @@ namespace PipenGeneX
     //[Verb("run", HelpText = "Run a PipegeneX Workflow definition JSON filePath")]
     public class Options
     {
+        //[Option('h', "help", HelpText = "Display this help message.")]
+        //public bool Help { get; set; }
         //[Option('f', "FILE", Required = true, HelpText = "PipegeneX Workflow definition JSON file")]
         //[Value(0, Required = true, HelpText = "PipegeneX Workflow definition JSON file")]
         //public string FILE { get; set; } = string.Empty;
         //[Value(0, MetaName = "run", Required = true, HelpText = "Run a PipegeneX Workflow definition JSON file")]
         //public string run { get; set; }
-        
+
         [Value(0, MetaName = "FILE", Required = true, HelpText = "PipegeneX Workflow definition JSON file")]
         public string FILE { get; set; } = string.Empty;
 

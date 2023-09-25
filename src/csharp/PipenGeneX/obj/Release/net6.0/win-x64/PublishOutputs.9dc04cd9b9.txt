@@ -1,0 +1,2 @@
+C:\lib\pipegenex\bin\PipenGeneX.pdb
+C:\lib\pipegenex\bin\PipenGeneX.exe
